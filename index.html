@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body>
-    <div data-controller="garage" class="app">
+    <div class="app" data-controller="garage">
       <div class="garage">
         <div class="garage-image">
           <div class="garage-logo">
@@ -27,17 +27,17 @@
               <input data-garage-target="model" id="model" type="text" class="form-control" placeholder="308 GTS" />
               <input data-garage-target="plate" id="plate" type="text" class="form-control" placeholder="56E-478" />
               <input data-garage-target="owner" id="owner" type="text" class="form-control" placeholder="Thomas Magnum" />
-              <input data-action="click->garage#addCar" type="submit" id="submit-btn" class="btn btn-cta" value="Add a Car" />
+              <input type="submit" data-action="click->garage#createCar" id="submit-btn" class="btn btn-cta" value="Add a Car" />
             </form>
 
           </div>
         </div>
       </div>
-
-      <div  data-garage-target="carList" class="cars-list">
+      
+      <div class="cars-list" data-garage-target="list">
 
         <!-- NOTE: The team designer left you this template for a car. Enjoy! -->
-        <div class="car">
+        <!-- <div class="car">
           <div class="car-image">
             <img src="http://loremflickr.com/280/280/Ferrari 308 GTS" />
           </div>
@@ -46,7 +46,7 @@
             <p><strong>Owner:</strong> Thomas Magnum</p>
             <p><strong>Plate:</strong> 56E-478</p>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 

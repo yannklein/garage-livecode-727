@@ -1,71 +1,83 @@
 // DON'T CHANGE THIS LINE
-const myBadAssGarage = "yanns-yarn-barn";
+const myBadAssGarage = "galyms-ultra-famous-garage";
 if (myBadAssGarage) document.querySelector("#garage-name").innerText = myBadAssGarage.replace(/-/g, " ");
 // //////////////////////
 
+// Tips: use 'sjc' shortcut to build the controller
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
-  static targets = [ 'brand', 'model', 'plate', 'owner', 'carList' ]
+  static targets = [ 'list', 'brand', 'model', 'owner', 'plate' ]
 
   connect() {
     console.log('Hello from garage_controller.js')
+    console.log(this.listTarget)
     this.url = `https://wagon-garage-api.herokuapp.com/${myBadAssGarage}/cars`
-    this.showCars();
+    this.getCars();
   }
 
-  addCar(event) {
-    event.preventDefault()
-    const car = {
-      brand: this.brandTarget.value,
-      model: this.modelTarget.value,
-      plate: this.plateTarget.value,
-      owner: this.ownerTarget.value
-    }
-    fetch(this.url, {
-      method: "POST", 
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(car)
-    })
-    .then(response => response.json())
-    .then((data) => {
-      console.log(data)
-      this.showCars();
-    })
-  }
-
-  showCars() {
-    console.log("Car list!")
+  getCars() {
     fetch(this.url)
       .then(response => response.json())
       .then((data) => {
         console.log(data)
-        this.displayCarList(data);
+        this.showCars(data)
       })
   }
 
-  displayCarList(cars) {
-    this.carListTarget.innerHTML = ""
+  showCars(cars) {
+    this.listTarget.innerHTML = ""
     cars.forEach((car) => {
-      this.carListTarget.insertAdjacentHTML(
-        "beforeend",
-        `<div class="car">
-          <div class="car-image">
-            <img src="http://loremflickr.com/280/280/${car.brand} ${car.model}" />
-          </div>
-          <div class="car-info">
-            <h4>${car.brand} ${car.model}</h4>
-            <p><strong>Owner:</strong>${car.owner}</p>
-            <p><strong>Plate:</strong>${car.plate}</p>
-          </div>
-        </div>
-        `
-      )
-    })
+      this.listTarget.insertAdjacentHTML(
+        "afterbegin",
+        ` <div class="car">
+            <div class="car-image">
+              <img src="http://loremflickr.com/280/280/${car.brand} ${car.model}" />
+            </div>
+            <div class="car-info">
+              <h4>${car.brand} ${car.model}</h4>
+              <p><strong>Owner:</strong>${car.owner}</p>
+              <p><strong>Plate:</strong>${car.plate}</p>
+            </div>
+          </div>`
+      );
+    });
   }
+  createCar(event) {
+    event.preventDefault();
+
+    fetch(this.url, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body:JSON.stringify({
+          "brand": this.brandTarget.value,
+          "model": this.modelTarget.value,
+          "owner": this.ownerTarget.value,
+          "plate": this.plateTarget.value
+      })
+      
+    }).then(response => response.json())
+    .then((data) => {
+      console.log(data)
+      this.getCars
+    })
+  };
 }
 
-// 1 Define targets in the HTML  form + button and car list
-// 2 Define action to add car to garage
-// 3 retrieve cars information from API (database)
-// 4 display each card with individual car info
+
+
+// Show all the cars
+// 1. Select cars-list DONE
+
+// 2. fetch API (GET), get all the cars data DONE
+
+// 3. populate the cars-list with cars cards
+
+// Add a new car
+// 1. Select button, the 4 inputs
+
+// 2. listen to a click on button
+
+// 3. POST request to the API with car data
+
+// 4. reload the cars-list
